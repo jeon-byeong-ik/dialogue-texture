@@ -6,10 +6,11 @@ import { createCipheriv, createDecipheriv, pbkdf2Sync, randomBytes, timingSafeEq
 const here = dirname(fileURLToPath(import.meta.url));
 const project = resolve(here, '..');
 const source = process.argv[2];
+const target = process.argv[3] ?? 'assets/main-report.enc.json';
 const password = process.env.REPORT_PASSWORD;
 
 if (!source || !password) {
-  throw new Error('Usage: REPORT_PASSWORD=... node scripts/encrypt-report.mjs <source.html>');
+  throw new Error('Usage: REPORT_PASSWORD=... node scripts/encrypt-report.mjs <source.html> [output.json]');
 }
 
 const iterations = 310000;
@@ -21,7 +22,7 @@ const html = await readFile(resolve(project, source));
 const body = Buffer.concat([cipher.update(html), cipher.final()]);
 const tag = cipher.getAuthTag();
 const encrypted = Buffer.concat([body, tag]);
-const output = resolve(project, 'assets/main-report.enc.json');
+const output = resolve(project, target);
 
 const decipher = createDecipheriv('aes-256-gcm', key, iv);
 decipher.setAuthTag(tag);
