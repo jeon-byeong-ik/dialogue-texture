@@ -26,7 +26,7 @@
   <script>
     (()=>{
       const date=new URLSearchParams(location.search).get('date')||'';
-      if(!/^2026-08-(16|17|18|19|20|21|22|23|24|25|26)$/.test(date)){
+      if(!/^2026-08-(16|17|18|19|20|21|22|23|24|25|26|27)$/.test(date)){
         document.querySelector('#auth-title').textContent='보고서 날짜를 확인해주세요';
         document.querySelector('#unlock-form').hidden=true;
         return;
